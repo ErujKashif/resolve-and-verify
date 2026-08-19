@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "837612597821",
+    "project_id": "resolve-verify",
+    "storage_bucket": "resolve-verify.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837612597821:android:18b4d5de44b2731351b054",
+        "android_client_info": {
+          "package_name": "com.example.resolve_verify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAx_ClrZx8X0gtfnWqYAvJYCfeQyCd_3t4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

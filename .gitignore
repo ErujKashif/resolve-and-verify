@@ -1,0 +1,41 @@
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Build folders
+dist/
+build/
+out/
+
+# Backend
+backend/node_modules/
+backend/.env
+
+# Frontend
+frontend/node_modules/
+frontend/build/
+frontend/.env
+
+# Mobile
+mobile/build/
+mobile/.env
+mobile/android/.gradle
+mobile/ios/Pods/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Firebase service account
+firebase-service-account.json

@@ -1,0 +1,58 @@
+name: resolve_verify
+description: Resolve & Verify - CDA Citizen Feedback System
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Networking
+  http: ^1.1.0
+
+  # State Management
+  provider: ^6.0.5
+
+  # Local Storage
+  shared_preferences: ^2.2.2
+
+  # Image Picker (Camera)
+  image_picker: ^1.0.4
+
+  # GPS Location
+  geolocator: ^10.1.0
+
+  # Image Compression
+  flutter_image_compress: ^2.1.0
+
+  # Environment Variables
+  flutter_dotenv: ^5.1.0
+
+  # Navigation
+  go_router: ^13.0.0
+
+  # UI Helpers
+  flutter_svg: ^2.0.9
+  intl: ^0.18.1
+
+  # Loading Animations
+  flutter_spinkit: ^5.2.0
+
+  # Image Display
+  cached_network_image: ^3.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - .env
+    - assets/images/
+
+    - assets/images/margalla.jpg
