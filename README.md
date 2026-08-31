@@ -401,12 +401,6 @@ Full‑Stack & Mobile Application Developer
 - **GitHub:** [ErujKashif](https://github.com/ErujKashif)
 - **Project Repository:** [https://github.com/ErujKashif/resolve-and-verify](https://github.com/ErujKashif/resolve-and-verify)
 
----
-
-## 🙏 Acknowledgments
-
-- **National Engineering and Scientific Commission (NESCOM)** – Internship Host
-- **Dr. Inayatullah Khan Yousafzai** – Project Supervisor
 
 ---
 
