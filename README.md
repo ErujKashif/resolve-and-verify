@@ -14,14 +14,6 @@
   <img src="https://img.shields.io/badge/Database-MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
 </p>
 
-<p align="center">
-  <a href="#overview">Overview</a> •
-  <a href="#system-workflow">Workflow</a> •
-  <a href="#technology-stack">Technology Stack</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#api-overview">API</a> •
-  <a href="#deployment">Deployment</a>
-</p>
 
 ---
 
