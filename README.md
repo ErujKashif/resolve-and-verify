@@ -3,201 +3,273 @@
 ## A Citizen-Centric Complaint Management System for Islamabad
 
 <p align="center">
-  <strong>A Smart Digital Framework for Complaint Management, Resolution Verification, and Municipal Accountability</strong>
+  <strong>
+    A Smart Digital Framework for Complaint Management,
+    Resolution Verification, and Municipal Accountability
+  </strong>
 </p>
 
 <p align="center">
   <a href="https://github.com/ErujKashif/resolve-and-verify">
-    <img src="https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github" alt="GitHub">
+    <img src="https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github" alt="GitHub Repository">
   </a>
-  <img src="https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
+  <img src="https://img.shields.io/badge/React-Web-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
   <img src="https://img.shields.io/badge/Flutter-Mobile-02569B?style=for-the-badge&logo=flutter" alt="Flutter">
   <img src="https://img.shields.io/badge/Node.js-Backend-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js">
+  <img src="https://img.shields.io/badge/Express.js-API-000000?style=for-the-badge&logo=express" alt="Express.js">
   <img src="https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
+  <img src="https://img.shields.io/badge/Firebase-FCM-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase">
 </p>
 
 <p align="center">
-  <a href="https://resolve-and-verify.vercel.app/">Live Demo</a> •
-  <a href="#features">Features</a> •
+  <a href="#overview">Overview</a> •
+  <a href="#problem-statement">Problem</a> •
   <a href="#system-workflow">Workflow</a> •
-  <a href="#technology-stack">Technology Stack</a> •
-  <a href="#installation">Installation</a>
+  <a href="#system-architecture">Architecture</a> •
+  <a href="#installation-and-setup">Installation</a> •
+  <a href="#user-manual">User Manual</a>
 </p>
 
 ---
 
-## 📌 Overview
+---
 
-**Resolve & Verify** is a full-stack citizen feedback and complaint management system designed for municipal sanitation services in Islamabad.
+# Overview
 
-The platform provides a digital communication and management layer between **citizens, sanitation crews, administrators, and officers**. Citizens can report sanitation-related issues, field crews can manage assigned complaints, and authorized administrative users can monitor and oversee the resolution process.
+**Resolve & Verify** is a full-stack, citizen-centric complaint management platform designed around municipal sanitation services in Islamabad.
 
-The key concept behind the system is **resolution verification**. Instead of treating a complaint as permanently resolved immediately after field action, the system introduces a verification step through which the citizen can confirm whether the reported issue has actually been addressed.
+The system is designed to close an important accountability gap in conventional complaint handling: a service provider may mark a complaint as resolved, while the citizen may still consider the issue unresolved.
 
-This creates a more transparent and accountable complaint lifecycle.
+Resolve & Verify introduces a **citizen verification stage** after field resolution. The citizen can either:
 
-### Core Workflow
+- **Accept the resolution**, which closes the complaint; or
+- **Reject the resolution**, which escalates the complaint to an authorized officer for review and further administrative action.
+
+The platform combines:
+
+- A **React-based web application** for administrative and officer workflows
+- A **Flutter mobile application** for citizens and sanitation crews
+- A **Node.js / Express REST API** for backend services
+- **MongoDB Atlas** for persistent data storage
+- **Firebase Cloud Messaging (FCM)** for push notifications
+- **Email OTP authentication** and **JWT-based authorization**
+
+The system therefore provides a complete digital trail from complaint submission to verified resolution.
+
+---
+
+# Problem Statement
+
+Municipal sanitation services require a reliable chain of:
+
+**Reporting → Assignment → Field Execution → Resolution → Verification**
+
+In a conventional complaint workflow, the process may stop once a field worker reports that the complaint has been resolved.
+
+This creates several challenges:
+
+- Citizens may have limited visibility into complaint progress.
+- A complaint may be marked resolved without citizen confirmation.
+- There may be insufficient evidence for disputed resolutions.
+- Administrative teams may have difficulty monitoring assignments.
+- Escalated complaints may lack a structured review process.
+- Accountability for unresolved service issues can be difficult to establish.
+
+Resolve & Verify addresses these challenges by making the citizen an explicit participant in the resolution-verification process.
+
+---
+
+# Objectives
+
+The primary objectives of Resolve & Verify are:
+
+1. Provide citizens with a simple digital channel for reporting sanitation complaints.
+2. Record complaint location and supporting photographic evidence.
+3. Provide administrators with centralized complaint monitoring and crew assignment.
+4. Allow sanitation crews to manage assigned complaints and submit resolution evidence.
+5. Introduce citizen-controlled resolution verification.
+6. Escalate rejected resolutions to authorized officers.
+7. Provide before-and-after evidence for disputed cases.
+8. Support administrative penalty recording where authorized.
+9. Provide lifecycle notifications through Firebase Cloud Messaging.
+10. Maintain a structured and traceable complaint record.
+
+---
+
+# Proposed Solution
+
+Resolve & Verify implements a controlled complaint lifecycle in which every major stage is represented digitally.
 
 ```text
-Citizen Reports Issue
+Citizen
+   │
+   │ Submit Complaint
+   ▼
+┌───────────────┐
+│ Open Complaint│
+└───────┬───────┘
         │
+        │ Admin Assignment
         ▼
-Complaint Created
+┌────────────────┐
+│ Assigned to    │
+│ Sanitation Crew│
+└───────┬────────┘
         │
+        │ Field Resolution
         ▼
-Administrator Assigns Crew
+┌────────────────┐
+│    Resolved    │
+│ + After Photo  │
+└───────┬────────┘
         │
+        │ Citizen Verification
         ▼
-Crew Handles Complaint
+   ┌─────────────┐
+   │ Verification│
+   └──────┬──────┘
+          │
+     ┌────┴────┐
+     │         │
+    YES        NO
+     │         │
+     ▼         ▼
+  Closed   Escalated
+               │
+               ▼
+        Officer Review
+               │
+               ▼
+       Administrative Action
+
+This transforms complaint handling from a one-way reporting mechanism into a closed-loop feedback and accountability system.
+
+The system defines four primary operational roles.
+
+Role	Primary Responsibilities
+Citizen	Submit complaints, view personal complaints, verify resolutions
+Sanitation Crew	View assigned complaints, perform field work, submit resolution evidence
+Administrator	Monitor complaints, assign complaints, manage crews
+Senior Officer	Review escalated complaints, compare evidence, record administrative penalties
+System Workflow
+Complete Complaint Workflow
+Step 1 — Citizen Authentication
+
+The citizen enters an email address and requests an OTP.
+
+The system sends the OTP through the configured email service.
+
+The citizen enters the OTP and receives an authenticated session.
+
+Step 2 — Complaint Creation
+
+The citizen creates a complaint by providing:
+
+Complaint information
+Address
+GPS location
+Before photograph
+
+The complaint is stored with an initial Open status.
+
+Step 3 — Administrative Assignment
+
+The administrator reviews open complaints and assigns an available sanitation crew.
+
+The complaint changes from:
+
+Open → Assigned
+Step 4 — Crew Resolution
+
+The assigned crew views the complaint and visits the reported location.
+
+The crew provides resolution evidence, including the required after-photo.
+
+The complaint then changes to:
+
+Assigned → Resolved
+Step 5 — Citizen Verification
+
+The citizen receives a notification that the complaint has been marked resolved.
+
+The citizen reviews the resolution.
+
+Two outcomes are possible:
+
+Resolved → Closed
+
+when the citizen accepts the resolution.
+
+Or:
+
+Resolved → Escalated
+
+when the citizen rejects the resolution.
+
+Step 6 — Officer Review
+
+An officer reviews the escalated complaint and can compare the available evidence.
+
+Where authorized, the officer may record a penalty and finalize the administrative action.
+
+Complaint Lifecycle
+
+The official complaint state model is:
+
+┌─────────┐
+│  OPEN   │
+└────┬────┘
+     │
+     │ Administrator assigns crew
+     ▼
+┌──────────┐
+│ ASSIGNED │
+└────┬─────┘
+     │
+     │ Crew submits resolution evidence
+     ▼
+┌──────────┐
+│ RESOLVED │
+└────┬─────┘
+     │
+     │ Citizen verification
+     ▼
+┌──────────────────┐
+│ Citizen Decision │
+└───────┬──────────┘
         │
-        ▼
-Complaint Marked Resolved
-        │
-        ▼
-Citizen Verifies Resolution
-        │
-        ├───────────────┐
-        │               │
-       YES              NO
-        │               │
-        ▼               ▼
-     CLOSED         ESCALATED
-                        │
-                        ▼
-                 Officer Review
-🎯 Problem Statement
+   ┌────┴────┐
+   │         │
+  YES        NO
+   │         │
+   ▼         ▼
+┌────────┐ ┌───────────┐
+│ CLOSED │ │ ESCALATED │
+└────────┘ └─────┬─────┘
+                 │
+                 │ Officer review
+                 ▼
+          ┌──────────────┐
+          │ Administrative│
+          │    Action     │
+          └──────────────┘
+State Transition Rules
+Current State	Action	Next State
+Open	Administrator assigns crew	Assigned
+Assigned	Crew submits resolution	Resolved
+Resolved	Citizen accepts	Closed
+Resolved	Citizen rejects	Escalated
+Escalated	Authorized officer action	Closed / Finalized
+System Architecture
 
-Municipal complaint systems can face challenges when citizens have limited visibility into what happens after a complaint is submitted.
+Resolve & Verify follows a layered three-tier architecture.
 
-Common challenges include:
-
-Limited citizen involvement after complaint submission
-Complaints being marked resolved without direct citizen confirmation
-Difficulty tracking complaint progress
-Lack of centralized complaint information
-Limited accountability for unresolved issues
-Manual coordination between citizens and service providers
-Difficulty reviewing escalated complaints
-Limited transparency in the overall complaint lifecycle
-
-Resolve & Verify addresses these challenges by creating a structured digital workflow that connects complaint reporting, assignment, resolution, verification, and escalation.
-
-💡 Proposed Solution
-
-Resolve & Verify introduces a centralized platform where each complaint moves through a controlled lifecycle.
-
-The system enables:
-Citizens to report sanitation issues.
-Complaint information to be stored digitally.
-Administrators to manage and assign complaints.
-Sanitation crews to access assigned complaints.
-Crews to submit resolution information.
-Resolved complaints to be presented for citizen verification.
-Citizens to confirm or reject the reported resolution.
-Rejected resolutions to enter an escalation workflow.
-Officers to review escalated complaints.
-Appropriate administrative action to be recorded where required.
-
-This transforms complaint handling from a simple "report → resolve" process into a "report → resolve → verify → close/escalate" workflow.
-
-✨ Features
-👤 Citizen Module
-Citizen authentication
-Complaint submission
-Sanitation issue reporting
-Complaint details and description
-Location information
-Evidence submission
-Complaint status tracking
-Complaint history
-Resolution verification
-Resolution acceptance or rejection
-Complaint updates and notifications
-🚛 Sanitation Crew Module
-Secure crew authentication
-Assigned complaint management
-Complaint detail viewing
-Access to reported issue information
-Resolution handling
-Resolution evidence submission
-Complaint status updates
-🧑‍💼 Administrator Module
-Administrative dashboard
-Complaint monitoring
-Complaint status management
-Complaint assignment
-Sanitation crew management
-Complaint progress monitoring
-Centralized complaint overview
-👨‍⚖️ Officer Module
-Officer dashboard
-Escalated complaint monitoring
-Complaint review
-Resolution evidence review
-Rejected-resolution investigation
-Administrative action
-Penalty/action recording where applicable
-🔄 System Workflow
-
-The complete complaint lifecycle is designed around accountability and verification.
-
-┌─────────────────┐
-│     CITIZEN     │
-│ Reports Issue   │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│    COMPLAINT    │
-│     CREATED     │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│      ADMIN      │
-│ Assigns Crew    │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│      CREW       │
-│ Handles Issue   │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│     RESOLVED    │
-└────────┬────────┘
-         │
-         ▼
-┌────────────────────────┐
-│   CITIZEN VERIFICATION │
-└───────────┬────────────┘
-            │
-      ┌─────┴─────┐
-      │           │
-     YES          NO
-      │           │
-      ▼           ▼
-┌─────────┐  ┌───────────┐
-│ CLOSED  │  │ ESCALATED │
-└─────────┘  └─────┬─────┘
-                   │
-                   ▼
-             ┌─────────────┐
-             │   OFFICER   │
-             │    REVIEW   │
-             └─────────────┘
-🏗️ System Architecture
-
-Resolve & Verify is structured as a multi-platform full-stack application consisting of a web application, mobile application, backend services, and database.
-
-                         ┌──────────────────────┐
-                         │        USERS         │
-                         │                      │
-                         │ Citizen / Crew       │
-                         │ Admin / Officer      │
-                         └──────────┬───────────┘
+                        ┌───────────────────────┐
+                        │        USERS          │
+                        │                       │
+                        │ Citizen │ Crew        │
+                        │ Admin   │ Officer     │
+                        └───────────┬───────────┘
                                     │
                     ┌───────────────┴───────────────┐
                     │                               │
@@ -205,344 +277,348 @@ Resolve & Verify is structured as a multi-platform full-stack application consis
           ┌──────────────────┐            ┌──────────────────┐
           │  Flutter Mobile  │            │    React Web     │
           │                  │            │                  │
-          │ Citizen + Crew  │            │ Admin + Officer  │
+          │ Citizen + Crew   │            │ Admin + Officer  │
           └────────┬─────────┘            └────────┬─────────┘
                    │                               │
                    └───────────────┬───────────────┘
                                    │
-                                   │ REST API
+                                   │ HTTPS / REST API
                                    ▼
                          ┌──────────────────────┐
-                         │ Node.js + Express    │
+                         │   Node.js + Express  │
                          │                      │
                          │ Authentication       │
                          │ Authorization        │
-                         │ Complaint Management  │
-                         │ Assignment            │
-                         │ Resolution            │
-                         │ Verification          │
-                         │ Escalation            │
-                         └──────────┬───────────┘
-                                    │
-                 ┌──────────────────┼──────────────────┐
-                 │                  │                  │
-                 ▼                  ▼                  ▼
-          ┌─────────────┐   ┌──────────────┐   ┌──────────────┐
-          │   MongoDB   │   │   Firebase   │   │    Email     │
-          │    Atlas    │   │     FCM      │   │     OTP      │
-          └─────────────┘   └──────────────┘   └──────────────┘
-🛠️ Technology Stack
+                         │ Validation           │
+                         │ Complaint Management │
+                         │ Assignment           │
+                         │ Resolution           │
+                         │ Verification         │
+                         │ Escalation           │
+                         │ User Management      │
+                         └───────────┬──────────┘
+                                     │
+                ┌────────────────────┼────────────────────┐
+                │                    │                    │
+                ▼                    ▼                    ▼
+        ┌───────────────┐    ┌──────────────┐    ┌──────────────┐
+        │   MongoDB     │    │   Firebase   │    │ Email / SMTP │
+        │     Atlas     │    │     FCM      │    │     OTP      │
+        └───────────────┘    └──────────────┘    └──────────────┘
+Component Responsibilities
+Component	Responsibility
+Flutter Mobile	Citizen and crew workflows, camera/GPS access, session state, notifications
+React Web	Administrative and officer dashboards, filtering, assignment and escalation review
+Express API	Authentication, authorization, validation, complaint lifecycle and user management
+MongoDB Atlas	Users, complaints and operational data
+Firebase FCM	Push notification delivery
+Email / SMTP	OTP delivery
+Vercel	Web application hosting
+Render	Backend/API hosting
+Technology Stack
 Frontend
-React.js
-JavaScript
-HTML5
-CSS3
-React Router
-Context API
-Mobile Application
-Flutter
-Dart
-Provider
-GoRouter
-Geolocation
-Image/Camera handling
-Firebase Cloud Messaging
-Local notifications
+Technology	Purpose
+React.js	Web application
+JavaScript	Application logic
+HTML5	Web structure
+CSS3	Styling
+React Router	Client-side routing
+Context API	Frontend state management
+Mobile
+Technology	Purpose
+Flutter	Cross-platform mobile development
+Dart	Mobile application language
+Provider	State management
+GoRouter	Navigation
+Geolocation	GPS/location capture
+Image/Camera packages	Evidence capture
+Firebase Messaging	Push notifications
+Local Notifications	Local notification handling
 Backend
-Node.js
-Express.js
-RESTful APIs
-JWT Authentication
-Nodemailer
-Firebase Admin SDK
+Technology	Purpose
+Node.js	Runtime
+Express.js	REST API framework
+JWT	Authentication/session tokens
+Nodemailer	Email/OTP delivery
+Firebase Admin SDK	Server-side notifications
 Database
-MongoDB
-MongoDB Atlas
-Mongoose
-Authentication & Authorization
-Email OTP authentication
-JWT-based authentication
-Role-Based Access Control
-Protected API routes
-Environment-based configuration
-Deployment & Cloud
-Vercel
-Render
-MongoDB Atlas
-Firebase Cloud Messaging
-Development Tools
-Git
-GitHub
-Visual Studio Code
-Postman
-npm
-Flutter SDK
-👥 User Roles
-Role	Responsibilities
-👤 Citizen	Report complaints, track progress, and verify resolution
-🚛 Sanitation Crew	View assigned complaints and submit resolution information
-🧑‍💼 Administrator	Manage complaints, assignments, and crew members
-👨‍⚖️ Officer	Review escalated complaints and take appropriate administrative action
-🔐 Authentication & Authorization
+Technology	Purpose
+MongoDB	Document database
+MongoDB Atlas	Cloud database
+Mongoose	MongoDB object modeling
+Infrastructure
+Service	Purpose
+GitHub	Source control
+Vercel	React deployment
+Render	Backend deployment
+MongoDB Atlas	Managed database
+Firebase	Push notification infrastructure
+Functional Requirements
 
-The application uses authentication and role-based authorization to provide controlled access to different areas of the system.
+Citizen Requirements
+ID	Requirement
+C1	Citizen can request an OTP using an email address
+C2	Citizen can verify an OTP and receive an authenticated session
+C3	Citizen can create a complaint with address, GPS location and before-photo
+C4	Citizen can view complaints associated with their account
+C5	Citizen receives a notification when a complaint is resolved
+C6	Citizen can accept or reject the reported resolution
+
+Crew Requirements
+ID	Requirement
+CR1	Crew can authenticate and view complaints assigned to them
+CR2	Crew can open complaint details and view reported evidence
+CR3	Crew must provide an after-photo before marking a complaint resolved
+CR4	Crew resolution records evidence and a resolution timestamp
+
+Administrator Requirements
+ID	Requirement
+AD1	Administrator can view complaints and filter by lifecycle status
+AD2	Administrator can assign an open complaint to a crew member
+AD3	Administrator can view available crew members
+
+Officer Requirements
+ID	Requirement
+OF1	Officer can view escalated complaints
+OF2	Officer can review before/after evidence
+OF3	Officer can record a penalty and finalize administrative action
+
+Notification Requirements
+ID	Requirement
+N1	System stores FCM device tokens for authenticated mobile users
+N2	System sends lifecycle notifications for resolution, escalation and penalty events
+
+Non-Functional Requirements
+ID	Category	Requirement
+NFR1	Security	OTP expires after 5 minutes; JWT expires after 7 days
+NFR2	Authorization	Role-based middleware prevents unauthorized operations
+NFR3	Privacy	First release does not require CNIC/national ID
+NFR4	Evidence Integrity	Crew resolution requires camera-based after-photo capture
+NFR5	Performance	Target normal API response time is below 2 seconds
+NFR6	Scalability	Stateless API architecture should support horizontal scaling
+NFR7	Availability	Cloud deployment should provide practical availability for a pilot
+NFR8	Usability	Citizen verification uses a simple Yes/No decision
+NFR9	Maintainability	Business logic is separated into controllers, services, middleware and models
+NFR10	Portability	Mobile workflows use Flutter and web workflows use React
+
+Authentication and Authorization
+
+Resolve & Verify uses email OTP authentication combined with JWT-based authorization.
 
 Authentication Flow
-User
- │
- │ Email
- ▼
-┌────────────────┐
-│  Backend API   │
-│ Generate OTP   │
-└───────┬────────┘
-        │
-        ▼
-   Email Service
-        │
-        ▼
-      User
-        │
-        │ OTP
-        ▼
-┌────────────────┐
-│  Verify OTP    │
-└───────┬────────┘
-        │
-        ▼
-   JWT Generated
-        │
-        ▼
+User enters email
+       │
+       ▼
+Backend generates OTP
+       │
+       ▼
+OTP sent through email
+       │
+       ▼
+User enters OTP
+       │
+       ▼
+Backend validates OTP
+       │
+       ▼
+JWT session generated
+       │
+       ▼
 Authenticated User
+Session Configuration
+Setting	Value
+OTP validity	5 minutes
+JWT validity	7 days
+Authentication	Email OTP
+Authorization	JWT + role-based middleware
 Role-Based Access
-Citizen
-   └── Citizen-specific operations
 
-Crew
-   └── Assigned complaint operations
+The backend verifies both:
 
-Admin
-   └── Administrative operations
+Whether the request is authenticated.
+Whether the authenticated user's role is permitted to perform the requested operation.
+Evidence and Location Management
 
-Officer
-   └── Escalation and review operations
-📍 Location & Evidence
+Evidence is a central part of the Resolve & Verify workflow.
 
-Location and evidence are important components of the complaint management process.
+Citizen Evidence
 
-Complaint information can include:
+When creating a complaint, the citizen can provide:
 
-Address information
-Geographic coordinates
-Complaint description
-Before evidence
-Resolution/after evidence
-Complaint timestamps
+Address
+GPS coordinates
+Before photograph
+Crew Evidence
+
+When resolving a complaint, the crew provides:
+
+After photograph
 Resolution information
+Resolution timestamp
+Evidence Workflow
+          CITIZEN
+             │
+             ▼
+       Before Photo
+             │
+             ▼
+       GPS + Address
+             │
+             ▼
+      Complaint Record
+             │
+             ▼
+           CREW
+             │
+             ▼
+        After Photo
+             │
+             ▼
+      Resolution Record
+             │
+             ▼
+          OFFICER
+             │
+             ▼
+      Evidence Review
 
-This provides a digital record that can support complaint monitoring, verification, and escalation.
+The before-and-after evidence provides a structured basis for reviewing disputed resolutions.
 
-🔔 Notifications
+Notification System
 
-Firebase Cloud Messaging is used to support application notifications.
+Firebase Cloud Messaging is used for application notifications.
 
-Notifications can be used during important workflow events such as:
+Notifications are associated with important complaint lifecycle events.
 
-Complaint assignment
-Complaint resolution
-Citizen verification request
-Complaint escalation
-Administrative updates
+Event	Recipient
+Complaint assignment	Crew
+Complaint resolution	Citizen
+Citizen rejection / escalation	Officer
+Administrative penalty	Relevant user
+Notification Flow
+Complaint Event
+      │
+      ▼
+Backend
+      │
+      ▼
+Firebase Cloud Messaging
+      │
+      ▼
+Mobile Device
+      │
+      ▼
+User Notification
 
-Example:
+FCM device tokens are stored for authenticated mobile users.
 
-┌────────────────────────────────────────────┐
-│ 🔔 Complaint Resolved                     │
-│                                            │
-│ Your complaint has been marked as resolved │
-│ Please verify the resolution.              │
-│                                            │
-│             View Complaint                 │
-└────────────────────────────────────────────┘
-🗄️ Database
+Database Design
 
-MongoDB is used as the primary database.
+MongoDB Atlas is used as the primary persistence layer.
 
-The application primarily works with entities such as users and complaints.
-
-User
-User
+Main Collections
+MongoDB
 │
-├── _id
-├── name
-├── email
-├── role
-├── authentication information
-├── notification information
-└── createdAt
-Complaint
-Complaint
+├── Users
 │
-├── _id
-├── citizen
-├── description
-├── address
-├── location
-├── evidence
-├── assigned crew
-├── status
-├── resolution information
-├── verification information
-├── escalation information
-└── createdAt
-🔌 API Overview
+└── Complaints
 
-The backend exposes RESTful APIs for communication between the frontend/mobile applications and server.
+An AuditLogs collection is recommended for a production release to maintain a durable event trail.
+
+Users Collection
+{
+  "_id": "ObjectId",
+  "email": "String, unique",
+  "role": "citizen | crew | admin | officer",
+  "name": "String, optional",
+  "fcmTokens": ["String"],
+  "otp": "String",
+  "otpExpiry": "Date",
+  "createdAt": "Date"
+}
+Complaints Collection
+{
+  "_id": "ObjectId",
+  "citizen": "ObjectId -> Users",
+  "address": "String",
+  "location": {
+    "type": "Point",
+    "coordinates": ["longitude", "latitude"]
+  },
+  "beforePhoto": "String",
+  "afterPhoto": "String | null",
+  "status": "Open | Assigned | Resolved | Escalated | Closed",
+  "assignedTo": "ObjectId -> Users | null",
+  "resolvedAt": "Date | null",
+  "verifiedByCitizen": "Boolean | null",
+  "escalatedAt": "Date | null",
+  "penaltyAmount": "Number",
+  "penaltyRecordedBy": "ObjectId -> Users | null",
+  "createdAt": "Date"
+}
+API Reference
+
+The backend exposes REST APIs for authentication, complaint management, user management, assignment, resolution, verification, escalation and notifications.
 
 Authentication
-Method	Endpoint	Purpose
-POST	/api/auth/send-otp	Send authentication OTP
-POST	/api/auth/verify-otp	Verify OTP and authenticate user
-GET	/api/auth/me	Retrieve authenticated user
+Method	Endpoint	Description
+POST	/api/auth/send-otp	Send OTP
+POST	/api/auth/verify-otp	Verify OTP and issue JWT
+GET	/api/auth/me	Get authenticated user
+
 Complaints
-Method	Endpoint	Purpose
+Method	Endpoint	Description
 POST	/api/complaints	Create complaint
-GET	/api/complaints/my	Retrieve citizen complaints
-GET	/api/complaints/assigned	Retrieve assigned complaints
-GET	/api/complaints/all	Retrieve complaints
-GET	/api/complaints/escalated	Retrieve escalated complaints
-GET	/api/complaints/:id	Retrieve complaint details
+GET	/api/complaints/my	Get citizen complaints
+GET	/api/complaints/assigned	Get crew assignments
+GET	/api/complaints/all	Get all complaints
+GET	/api/complaints/escalated	Get escalated complaints
+GET	/api/complaints/:id	Get complaint details
 PUT	/api/complaints/:id/assign	Assign complaint
 PUT	/api/complaints/:id/resolve	Resolve complaint
-PUT	/api/complaints/:id/verify	Verify complaint resolution
-POST	/api/complaints/:id/penalty	Record penalty/action
+PUT	/api/complaints/:id/verify	Verify resolution
+POST	/api/complaints/:id/penalty	Record penalty
+
 User Management
-Method	Endpoint	Purpose
-GET	/api/users/crews	Retrieve crew members
-POST	/api/users/crew	Add crew member
+Method	Endpoint	Description
+GET	/api/users/crews	Get crew members
+POST	/api/users/crew	Create crew member
 DELETE	/api/users/crew/:id	Delete crew member
-POST	/api/users/fcm-token	Register notification token
-📱 Mobile Application
+POST	/api/users/fcm-token	Register FCM token
 
-The Flutter application focuses on mobile workflows for citizens and sanitation crews.
 
-Citizen Flow
-Login
-  │
-  ▼
-OTP Verification
-  │
-  ▼
-Citizen Dashboard
-  │
-  ├── Submit Complaint
-  │      ├── Complaint Details
-  │      ├── Location
-  │      └── Evidence
-  │
-  ├── My Complaints
-  │
-  └── Complaint Details
-          │
-          ▼
-      Verification
-        /       \
-       YES       NO
-        │         │
-        ▼         ▼
-      Close    Escalate
-Crew Flow
-Login
-  │
-  ▼
-Crew Dashboard
-  │
-  ▼
-Assigned Complaints
-  │
-  ▼
-Complaint Details
-  │
-  ▼
-Handle Complaint
-  │
-  ▼
-Submit Resolution Information
-  │
-  ▼
-Mark Resolved
-💻 Web Dashboard
-
-The React web application provides role-specific interfaces for administrative and supervisory workflows.
-
-Administrator Dashboard
-
-The administrator interface supports:
-
-Complaint overview
-Complaint monitoring
-Complaint assignment
-Crew management
-Status tracking
-Complaint progress monitoring
-Officer Dashboard
-
-The officer interface supports:
-
-Escalated complaint monitoring
-Complaint review
-Evidence review
-Resolution investigation
-Administrative action
-📂 Project Structure
-resolve-and-verify/
-│
-├── backend/
-│   ├── src/
-│   ├── package.json
-│   └── ...
-│
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   ├── package.json
-│   └── ...
-│
-├── mobile/
-│   ├── lib/
-│   ├── android/
-│   ├── ios/
-│   ├── pubspec.yaml
-│   └── ...
-│
-├── .gitignore
-├── LICENSE
-├── vercel.json
-└── README.md
-⚙️ Installation
+Installation and Setup
 Prerequisites
 
-Make sure the following are installed:
+Install the following software before running the project:
 
 Node.js
 npm
-MongoDB / MongoDB Atlas
+MongoDB or MongoDB Atlas account
 Flutter SDK
 Android Studio or VS Code
 Git
 1. Clone the Repository
 git clone https://github.com/ErujKashif/resolve-and-verify.git
 cd resolve-and-verify
-2. Backend Setup
+Backend Setup
+
+Open a terminal in the project directory.
+
 cd backend
+
+Install backend dependencies:
+
 npm install
 
-Create a .env file in the backend directory.
+Create a .env file inside the backend directory.
 
 Example:
 
 PORT=5000
+
 MONGO_URI=your_mongodb_connection_string
+
 JWT_SECRET=your_jwt_secret
 
 OTP_EXPIRY_MINUTES=5
@@ -551,25 +627,30 @@ JWT_EXPIRY_DAYS=7
 EMAIL_USER=your_email
 EMAIL_PASS=your_email_app_password
 
-Start the backend:
+FIREBASE_SERVICE_ACCOUNT=your_secure_firebase_configuration
+
+Start the development server:
 
 npm run dev
 
-or:
+If the project does not define a development script, use:
 
 npm start
 
-The backend will normally run on:
+The backend is configured to run on:
 
 http://localhost:5000
-3. Frontend Setup
+Frontend Setup
 
-Open a new terminal:
+Open a new terminal.
 
 cd frontend
+
+Install dependencies:
+
 npm install
 
-Configure the backend API URL according to the environment configuration used by the frontend.
+Configure the frontend API URL according to the environment configuration used by the application.
 
 Example:
 
@@ -579,256 +660,192 @@ Start the frontend:
 
 npm start
 
-The frontend will normally run on:
+The development frontend normally runs on:
 
 http://localhost:3000
-4. Mobile Setup
+Mobile Setup
 
-Navigate to the mobile application:
+Open another terminal.
 
 cd mobile
+
+Install Flutter dependencies:
+
 flutter pub get
 
-Check connected devices:
+Check available devices:
 
 flutter devices
 
 Run the application:
 
 flutter run
-🔥 Firebase Configuration
 
-Firebase services are used to support notification functionality.
+For Android development, ensure that:
 
-For mobile development, configure Firebase according to the target platform and project configuration.
+USB debugging is enabled on the Android device, or
+An Android emulator is running.
+Environment Configuration
 
-Important: Never commit Firebase private credentials, service-account files, API secrets, JWT secrets, database credentials, or email passwords to GitHub.
+The application requires environment-specific configuration for backend services.
 
-🌐 Deployment
+Backend Variables
+PORT=5000
+MONGO_URI=<MongoDB connection string>
+JWT_SECRET=<JWT secret>
+OTP_EXPIRY_MINUTES=5
+JWT_EXPIRY_DAYS=7
+EMAIL_USER=<email account>
+EMAIL_PASS=<email app password>
+FIREBASE_SERVICE_ACCOUNT=<secure Firebase configuration>
+Frontend
+REACT_APP_API_URL=<backend API URL>
 
-The application architecture supports deployment using modern cloud platforms.
+Never commit actual credentials, database connection strings, JWT secrets, email passwords, Firebase service-account credentials, or private API keys to GitHub.
 
-                    GitHub
-                       │
-             ┌─────────┴─────────┐
-             │                   │
-             ▼                   ▼
-          Vercel               Render
-             │                   │
-             ▼                   ▼
-      React Frontend       Node/Express API
-                                 │
-                                 ▼
-                         MongoDB Atlas
-                                 │
-                                 ▼
-                         Firebase Services
-Deployment Components
-Component	Technology / Platform
-Web Frontend	React
-Frontend Hosting	Vercel
-Backend	Node.js + Express
-Backend Hosting	Render
-Database	MongoDB Atlas
-Mobile Application	Flutter
-Notifications	Firebase Cloud Messaging
-Source Control	Git + GitHub
-🧪 Testing
+Running the Complete System
 
-The system should be tested across authentication, complaint management, authorization, and complete workflow scenarios.
+The complete development environment requires the backend, frontend and mobile application to be configured appropriately.
+
+Backend
+cd backend
+npm install
+npm run dev
+Web Application
+cd frontend
+npm install
+npm start
+Mobile Application
+cd mobile
+flutter pub get
+flutter run
+
+The basic communication flow is:
+
+React Web ──────┐
+                │
+Flutter Mobile ├──► Express REST API ───► MongoDB Atlas
+                │
+                └──► Firebase / Email Services
+Firebase Configuration
+
+Firebase Cloud Messaging is used for push notifications.
+
+The mobile application requires Firebase configuration for the target platform.
+
+The backend uses Firebase Admin functionality for server-side notification delivery.
+
+For production:
+
+Store Firebase credentials securely.
+Do not commit service-account credentials.
+Register and refresh FCM device tokens.
+Remove invalid or expired tokens.
+Configure notification permissions appropriately.
+Testing
+
+Testing covers authentication, complaint operations, authorization, notifications and the complete complaint lifecycle.
 
 Authentication Testing
+
+The following should be tested:
+
 OTP generation
+OTP delivery
 OTP verification
 OTP expiration
 JWT generation
 JWT validation
-Unauthorized access handling
+Unauthorized requests
 Complaint Testing
-Complaint creation
-Complaint retrieval
-Complaint assignment
-Complaint resolution
-Citizen verification
-Complaint rejection
-Complaint escalation
-Administrative action
-Authorization Testing
+
+
+Example role restrictions:
+
 Citizen
- ├── Can submit complaints
- └── Cannot perform administrative operations
+  ├── Can create complaints
+  ├── Can view own complaints
+  └── Can verify resolutions
 
 Crew
- ├── Can access assigned complaints
- └── Cannot perform administrative operations
+  ├── Can view assigned complaints
+  └── Can resolve assigned complaints
 
 Admin
- ├── Can manage complaints
- └── Can assign complaints
+  ├── Can view all complaints
+  └── Can assign complaints
 
 Officer
- ├── Can review escalated complaints
- └── Can perform officer-level actions
-🔒 Security Considerations
+  ├── Can view escalated complaints
+  └── Can record authorized penalties
 
-The application incorporates several security practices:
+Performance Testing
 
-JWT-based authentication
+The project documentation records the following test observations:
+
+Metric	Observed Value
+Average OTP delivery	~2.3 seconds
+Complaint submission	~4.1 seconds including image upload
+API p95 response time	~1.8 seconds
+Mobile launch	~2.5 seconds
+Indexed database query	<50 ms
+Load experiment	100 concurrent users
+
+These figures are project test observations, not independently audited production benchmarks. Actual production capacity depends on workload, media sizes, network conditions, database scale and sustained-load testing.
+
+Security
+
+Security mechanisms include:
+
+Email OTP authentication
+JWT-based sessions
 Role-Based Access Control
 Protected API endpoints
-OTP-based authentication
-Environment variables for sensitive configuration
-Role-specific authorization
-Controlled complaint operations
-Secure deployment configuration
-Sensitive Information
+Environment-based secret configuration
+Input/request validation
+Controlled complaint state transitions
+HTTPS for deployed environments
+Restricted CORS configuration
+Image type and size restrictions
+Secure database credentials
+Firebase credential protection
+Security Checklist
 
-The following information must never be committed to the repository:
+Before production deployment:
 
-.env
-MongoDB credentials
-JWT secrets
-Firebase service-account credentials
-Email passwords
-Private API keys
+ Use HTTPS
+ Store secrets in secure environment configuration
+ Use cryptographically secure OTP generation
+ Hash OTP values in production
+ Rate-limit OTP requests
+ Rate-limit OTP verification attempts
+ Restrict CORS to approved origins
+ Validate request payloads
+ Validate complaint IDs/ObjectIds
+ Restrict uploaded image types and sizes
+ Avoid exposing stack traces
+ Review dependency vulnerabilities
+ Use least-privilege service credentials
+ Keep secrets out of Git history
 
-Always keep sensitive configuration in environment variables and ensure appropriate entries exist in .gitignore.
+License
+See the LICENSE file included in this repository for licensing information.
 
-📸 Screenshots
-
-Screenshots can be added to the repository to demonstrate the application's interfaces.
-
-Recommended structure:
-
-screenshots/
-│
-├── citizen/
-│   ├── login.png
-│   ├── dashboard.png
-│   ├── complaint-form.png
-│   └── verification.png
-│
-├── crew/
-│   ├── dashboard.png
-│   └── complaint-resolution.png
-│
-├── admin/
-│   ├── dashboard.png
-│   └── assignment.png
-│
-└── officer/
-    ├── dashboard.png
-    └── escalation-review.png
-
-Example:
-
-## Screenshots
-
-### Citizen Dashboard
-
-![Citizen Dashboard](screenshots/citizen/dashboard.png)
-
-### Complaint Submission
-
-![Complaint Submission](screenshots/citizen/complaint-form.png)
-
-### Admin Dashboard
-
-![Admin Dashboard](screenshots/admin/dashboard.png)
-
-### Officer Dashboard
-
-![Officer Dashboard](screenshots/officer/dashboard.png)
-🚀 Future Enhancements
-
-Potential future improvements include:
-
-🇵🇰 Urdu and multilingual support
-📡 Offline functionality for field crews
-🗺️ GIS-based complaint visualization
-📍 Zone-based crew assignment
-📊 Advanced analytics and reporting
-🤖 Predictive complaint analysis
-🚛 Live sanitation vehicle tracking
-📡 IoT-enabled smart waste bins
-📈 Contractor performance analytics
-📤 Excel/PDF reporting
-🔎 Repeat-offender detection
-🔔 Advanced notification workflows
-🏙️ Integration with municipal GIS systems
-🎓 Project Information
-Field	Details
-Project Name	Resolve & Verify
-Project Type	Full-Stack Web & Mobile Application
-Domain	Civic Technology / Municipal Complaint Management
-Target Area	Islamabad
-Organization	National Engineering and Scientific Commission (NESCOM)
-Author	Eruj Kashif
-Supervisor	Dr. Inayatullah Khan Yousafzai
-Date	August 2026
-🤖 AI-Assisted Development
-
-AI tools were used as development assistants during the software development process.
-
-Tools Used
-DeepSeek
-Claude
-Areas of Assistance
-
-AI-assisted development was used for:
-
-Code generation
-Debugging
-Refactoring
-Development assistance
-UI implementation
-Test generation
-Documentation assistance
-Problem solving
-
-All AI-assisted output was reviewed and adapted before integration into the project.
-
-The development process followed a human-in-the-loop approach, with architectural decisions, requirements, business logic, security considerations, testing, and final implementation remaining under developer control.
-
-📚 Documentation
-
-The project documentation covers areas including:
-
-System requirements
-System architecture
-Complaint workflow
-User roles
-Database design
-API architecture
-Authentication
-Authorization
-Testing
-Deployment
-Future enhancements
-👨‍💻 Author
+Author
 Eruj Kashif
 
-Software Engineering Student
-Full-Stack & Mobile Application Developer
+GitHub: github.com/ErujKashif
 
-GitHub
+Project: Resolve & Verify
 
-github.com/ErujKashif
-
-Project Repository
-
-Resolve & Verify
-
-📄 License
-
-This project is licensed under the MIT License.
-
-See the LICENSE file for more information.
-
-⭐ Project Vision
+Project Vision
 
 A complaint should not be considered truly resolved until its resolution can be verified.
 
-Resolve & Verify aims to create a transparent connection between citizens and municipal service providers by transforming traditional complaint reporting into a trackable, verifiable, and accountable digital workflow.
+Resolve & Verify transforms conventional complaint reporting into a structured, transparent and accountable digital workflow.
 
-<p align="center"> <strong>Resolve & Verify</strong> <br> <em>Report. Resolve. Verify.</em> <br><br> Built with React • Flutter • Node.js • Express • MongoDB • Firebase </p> ```
+The platform connects:
+
+Citizen → Administration → Sanitation Crew → Citizen Verification → Officer Oversight
+
+with the goal of making municipal complaint handling more trackable, evidence-based and citizen-centric.
