@@ -19,7 +19,8 @@
   <a href="#system-workflow">Workflow</a> •
   <a href="#technology-stack">Technology Stack</a> •
   <a href="#installation">Installation</a> •
-  <a href="#api-overview">API</a>
+  <a href="#api-overview">API</a> •
+  <a href="#deployment">Deployment</a>
 </p>
 
 ---
@@ -64,42 +65,20 @@ The primary objectives of the system are to:
 
 ## 🔄 System Workflow
 
-The complete complaint lifecycle is designed as a closed‑loop process:
-Citizen
-│
-│ Submit Complaint
-▼
-Complaint Created
-│
-│ Admin Review & Assignment
-▼
-Sanitation Crew
-│
-│ Field Work & Resolution Evidence
-▼
-Complaint Marked Resolved
-│
-│ Citizen Verification
-▼
-┌───────────────────────┐
-│ Resolution Accepted? │
-└───────────┬───────────┘
-│
-┌─────┴─────┐
-│ │
-YES NO
-│ │
-▼ ▼
-CLOSED ESCALATED
-│
-▼
-Senior Officer
-Review
-│
-▼
-Administrative Action
+The complete complaint lifecycle is designed as a closed‑loop process. You can view the workflow using the Mermaid diagram below:
 
-text
+```mermaid
+graph TD
+    A[Citizen] -->|Submit Complaint| B[Complaint Created]
+    B -->|Admin Review & Assignment| C[Sanitation Crew]
+    C -->|Field Work & Resolution Evidence| D[Complaint Marked Resolved]
+    D -->|Citizen Verification| E{Resolution Accepted?}
+    E -->|Yes| F[CLOSED]
+    E -->|No| G[ESCALATED]
+    G --> H[Senior Officer Review]
+    H --> I[Administrative Action]
+    I --> F
+```
 
 ---
 
@@ -215,27 +194,23 @@ MongoDB is used as the primary persistent data store.
 
 ### Collections
 
-**Users**
-├── Citizen
-├── Sanitation Crew
-├── Administrator
-└── Senior Officer
+- **Users**
+    - Citizen
+    - Sanitation Crew
+    - Administrator
+    - Senior Officer
 
-text
-
-**Complaints**
-├── Citizen (reference)
-├── Assigned Crew (reference)
-├── Complaint Information
-├── Location (GeoJSON)
-├── Before Evidence
-├── Resolution Evidence
-├── Status
-├── Verification
-├── Escalation
-└── Administrative Action
-
-text
+- **Complaints**
+    - Citizen (reference)
+    - Assigned Crew (reference)
+    - Complaint Information
+    - Location (GeoJSON)
+    - Before Evidence
+    - Resolution Evidence
+    - Status
+    - Verification
+    - Escalation
+    - Administrative Action
 
 ### Complaint Data Structure
 
@@ -325,13 +300,18 @@ Firebase Cloud Messaging is used to support push notifications.
 ```bash
 git clone https://github.com/ErujKashif/resolve-and-verify.git
 cd resolve-and-verify
-2. Backend Setup
-bash
+```
+
+### 2. Backend Setup
+
+```bash
 cd backend
 npm install
-Create a .env file inside the backend directory:
+```
 
-env
+Create a `.env` file inside the `backend` directory:
+
+```env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
@@ -339,70 +319,102 @@ OTP_EXPIRY_MINUTES=5
 JWT_EXPIRY_DAYS=7
 EMAIL_USER=your_email
 EMAIL_PASS=your_email_app_password
+```
+
 Start the backend:
 
-bash
+```bash
 npm run dev
-3. Frontend Setup
-bash
+```
+
+### 3. Frontend Setup
+
+```bash
 cd frontend
 npm install
+```
+
 Configure the backend API URL:
 
-env
+```env
 REACT_APP_API_URL=http://localhost:5000/api
+```
+
 Start the React application:
 
-bash
+```bash
 npm start
-4. Mobile Setup
-bash
+```
+
+### 4. Mobile Setup
+
+```bash
 cd mobile
 flutter pub get
 flutter devices
 flutter run
-🔒 Security
+```
+
+---
+
+## 🔒 Security
+
 The system incorporates several security considerations:
 
-Email OTP authentication
+- Email OTP authentication
+- JWT‑based authorization
+- Role‑Based Access Control (RBAC)
+- Protected API endpoints
+- Environment variables for secrets
+- Role‑specific operations
+- Controlled complaint state transitions
+- Secure deployment configuration
 
-JWT‑based authorization
+### 🔒 Sensitive Files
 
-Role‑Based Access Control (RBAC)
+The following must **not** be committed to GitHub:
 
-Protected API endpoints
-
-Environment variables for secrets
-
-Role‑specific operations
-
-Controlled complaint state transitions
-
-Secure deployment configuration
-
-Sensitive Files
-The following must not be committed to GitHub:
-
-text
+```env
 .env
 .env.*
 MongoDB credentials
 JWT secrets
-Firebase service‑account credentials
+Firebase service-account credentials
 Email passwords
 Private API keys
+```
 
-📄 License
-This project is licensed under the MIT License. See the LICENSE file for details.
+---
 
-👨‍💻 Author
-Eruj Kashif
-Software Engineering Student
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 Author
+
+**Eruj Kashif**  
+Software Engineering Student  
 Full‑Stack & Mobile Application Developer
 
-GitHub: ErujKashif
+- **GitHub:** [ErujKashif](https://github.com/ErujKashif)
+- **Project Repository:** [https://github.com/ErujKashif/resolve-and-verify](https://github.com/ErujKashif/resolve-and-verify)
 
-Project Repository: https://github.com/ErujKashif/resolve-and-verify
+---
 
+## 🙏 Acknowledgments
 
-<p align="center"> <strong>Resolve & Verify</strong><br> <em>Report. Resolve. Verify.</em> </p><p align="center"> Built with ❤️ using React · Flutter · Node.js · Express · MongoDB · Firebase </p> ```
+- **National Engineering and Scientific Commission (NESCOM)** – Internship Host
+- **Dr. Inayatullah Khan Yousafzai** – Project Supervisor
+
+---
+
+<p align="center">
+  <strong>Resolve & Verify</strong><br>
+  <em>Report. Resolve. Verify.</em>
+</p>
+
+<p align="center">
+  Built with ❤️ using React · Flutter · Node.js · Express · MongoDB · Firebase
+</p>
